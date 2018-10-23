@@ -36,6 +36,8 @@ JoinMenu* JoinMenu::activeMenu = NULL;
 
 JoinMenu::JoinMenu() : serverStartMenu(NULL), serverMenu(NULL)
 {
+    std::vector<std::string>* options;
+
     // cache font face ID
     int fontFace = MainMenu::getFontFace();
 
@@ -118,6 +120,16 @@ JoinMenu::JoinMenu() : serverStartMenu(NULL), serverMenu(NULL)
     motto->setMaxLength(MottoLen - 1);
     motto->setString(info->motto);
     listHUD.push_back(motto);
+
+    killable = new HUDuiList;
+    killable->setFontFace(fontFace);
+    killable->setLabel("Can be killed:");
+    killable->setCallback(joinOptsCallback, "1");
+    options = &killable->getList();
+    options->push_back(std::string("No"));
+    options->push_back(std::string("Yes"));
+    killable->update();
+    listHUD.push_back(killable);
 
     startServer = new HUDuiLabel;
     startServer->setFontFace(fontFace);
@@ -269,6 +281,19 @@ void JoinMenu::setFailedMessage(const char* msg)
 {
     failedMessage->setString(msg);
     centerLabelHorizontally(failedMessage);
+}
+
+void            JoinMenu::joinOptsCallback(HUDuiControl* w, const void* data)
+{
+    HUDuiList* list = (HUDuiList*)w;
+    switch (((const char*)data)[0])
+    {
+    case '1':
+        BZDB.set("killable", list->getIndex() ? "1" : "0");
+        break;
+    default:
+        break;
+    }
 }
 
 TeamColor JoinMenu::getTeam() const

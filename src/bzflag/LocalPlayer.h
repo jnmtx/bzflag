@@ -72,6 +72,8 @@ public:
     const std::vector<const Obstacle*>& getInsideBuildings() const;
 
     void      setTeam(TeamColor);
+    bool      isRobot() const;
+    void      setRobot(bool = true);
     void      setDesiredSpeed(float fracOfMaxSpeed);
     void      setDesiredAngVel(float fracOfMaxAngVel);
     void      setPause(bool = true);
@@ -135,6 +137,7 @@ protected:
     LocalShotPath**   shots;
     bool    gettingSound;
     ServerLink*   server;
+    bool          robot;
 
 private:
     void      doSlideMotion(float dt, float slideTime,

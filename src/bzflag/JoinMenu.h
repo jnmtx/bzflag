@@ -52,6 +52,7 @@ private:
     static void     teamCallback(HUDuiControl*, const void*);
     TeamColor       getTeam() const;
     void        setTeam(TeamColor);
+    static void     joinOptsCallback(HUDuiControl*, const void*);
     void        setStatus(const char*, const std::vector<std::string> *parms = NULL);
     void        setFailedMessage(const char* msg);
     void        centerLabelHorizontally(HUDuiLabel* label);
@@ -66,6 +67,7 @@ private:
     HUDuiTextureLabel*  teamIcon;
     HUDuiTypeIn*    server;
     HUDuiTypeIn*    port;
+    HUDuiList*      killable;
     HUDuiLabel*     status;
     HUDuiLabel*     startServer;
     HUDuiLabel*     findServer;

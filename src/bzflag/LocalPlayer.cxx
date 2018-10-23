@@ -74,6 +74,7 @@ LocalPlayer::LocalPlayer(const PlayerId& _id,
         inputMethod = Mouse;
     else
         setInputMethod(BZDB.get("activeInputDevice"));
+    setRobot(false);
 }
 
 LocalPlayer::~LocalPlayer()
@@ -1107,6 +1108,16 @@ void            LocalPlayer::setTeam(TeamColor _team)
     changeTeam(_team);
 }
 
+inline bool     LocalPlayer::isRobot() const
+{
+    return robot;
+}
+
+inline void     LocalPlayer::setRobot(bool _robot)
+{
+    robot = _robot;
+}
+
 void            LocalPlayer::setDesiredSpeed(float fracOfMaxSpeed)
 {
     FlagType* flag = getFlag();
@@ -1666,9 +1677,12 @@ bool            LocalPlayer::checkHit(const Player* source,
             continue;
 
         // okay, shot hit
+        if ((BZDB.isSet("killable") && BZDB.isTrue("killable")) || isRobot())
+        {
         goodHit = true;
         hit = shot;
         minTime = t;
+        }
     }
     return goodHit;
 }

@@ -31,6 +31,7 @@ StartupInfo::StartupInfo() : hasConfiguration(false),
     strcpy(callsign, "");
     strcpy(password, "");
     strcpy(motto, "default");
+    killable = true;
     joystickName = "joystick";
     joystick = false;
 }

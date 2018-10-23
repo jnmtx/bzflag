@@ -844,6 +844,10 @@ int         main(int argc, char** argv)
             std::string value = BZDB.get("team");
             startupInfo.team = Team::getTeam(value);
         }
+        if (BZDB.isSet("killable"))
+        {
+            startupInfo.killable = BZDB.isTrue("killable");
+        }
         if (BZDB.isSet("server"))
         {
             // Flawfinder: ignore

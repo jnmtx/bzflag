@@ -38,6 +38,7 @@ public:
     char password[PasswordLen];
     char token[TokenLen];
     char motto[MottoLen];
+    bool killable;
     std::string listServerURL;
     int listServerPort;
     bool joystick;

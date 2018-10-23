@@ -38,6 +38,7 @@ RobotPlayer::RobotPlayer(const PlayerId& _id, const char* _name,
 {
     gettingSound = false;
     server       = _server;
+    setRobot();
 }
 
 // estimate a player's position at now+t, similar to dead reckoning
