@@ -1113,7 +1113,7 @@ inline bool     LocalPlayer::isRobot() const
     return robot;
 }
 
-inline void     LocalPlayer::setRobot(bool _robot)
+void            LocalPlayer::setRobot(bool _robot)
 {
     robot = _robot;
 }
