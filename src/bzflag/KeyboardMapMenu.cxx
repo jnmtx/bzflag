@@ -117,6 +117,7 @@ KeyboardMapMenu::KeyboardMapMenu() : defaultKey(this), editing(-1), quickKeysMen
     controls.push_back(createLabel(NULL, "Iconify:"));
     controls.push_back(createLabel(NULL, "Fullscreen:"));
     controls.push_back(createLabel(NULL, "Screenshot:"));
+    controls.push_back(createLabel(NULL, "Plant Mine:"));
     controls.push_back(quickKeys = createLabel(NULL, "Define Quick Keys"));
 
     initNavigation(controls, 2, controls.size()-1);
@@ -170,6 +171,7 @@ KeyboardMapMenu::KeyboardMapMenu() : defaultKey(this), editing(-1), quickKeysMen
     initkeymap("iconify", ++i);
     initkeymap("fullscreen", ++i);
     initkeymap("screenshot", ++i);
+    initkeymap("mine", ++i);
 }
 
 void KeyboardMapMenu::initkeymap(const std::string& name, int index)

@@ -88,6 +88,7 @@ ActionBinding::ActionBinding()
     wayToBindActions.insert(std::make_pair(std::string("autopilot"), press));
     wayToBindActions.insert(std::make_pair(std::string("cycleRadar"), press));
     wayToBindActions.insert(std::make_pair(std::string("cyclePanel"), press));
+    wayToBindActions.insert(std::make_pair(std::string("mine"), press));
 
     wayToBindActions.insert(std::make_pair(std::string("messagepanel all"), press));
     wayToBindActions.insert(std::make_pair(std::string("messagepanel chat"), press));
@@ -160,6 +161,7 @@ ActionBinding::ActionBinding()
     defaultBinding.insert(BindingTable::value_type("Right Mouse", "restart"));
     defaultBinding.insert(BindingTable::value_type("I", "restart"));
     defaultBinding.insert(BindingTable::value_type("9", "autopilot"));
+    defaultBinding.insert(BindingTable::value_type("X", "mine"));
 
     defaultBinding.insert(BindingTable::value_type("Shift+F1", "messagepanel all"));
     defaultBinding.insert(BindingTable::value_type("Shift+F2", "messagepanel chat"));

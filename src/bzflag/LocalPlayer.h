@@ -79,6 +79,7 @@ public:
     void      setPause(bool = true);
     void      activateAutoPilot(bool = true);
     bool      fireShot();
+    bool      plantMine();
     void      explodeTank();
     void      doJump();
     void      setJump();

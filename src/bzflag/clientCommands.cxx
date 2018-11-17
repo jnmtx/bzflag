@@ -189,6 +189,12 @@ static std::string cmdCycleRadar(const std::string&,
 static std::string cmdCyclePanel(const std::string&,
                                  const CommandManager::ArgList& args, bool*);
 
+/** plant mine
+*/
+static std::string cmdMine(const std::string&,
+                           const CommandManager::ArgList& args, bool*);
+
+
 
 const struct CommandListItem commandList[] =
 {
@@ -220,7 +226,8 @@ const struct CommandListItem commandList[] =
     { "toggleConsole",    &cmdToggleConsole,  "toggleConsole:  toggle console visibility" },
     { "toggleFlags",  &cmdToggleFlags,    "toggleFlags {main|radar}:  turn off/on field radar flags" },
     { "cycleRadar",   &cmdCycleRadar,     "cycleRadar {level1 [level2 ...] [off]}:  cycle to the next radar zoom level" },
-    { "cyclePanel",   &cmdCyclePanel,     "cyclePanel {left[_off]|right[_off]}:  cycle to the previous or next message panel tab" }
+    { "cyclePanel",   &cmdCyclePanel,     "cyclePanel {left[_off]|right[_off]}:  cycle to the previous or next message panel tab" },
+    { "mine",         &cmdMine,           "mine:  plant an anti-tank mine" }, /* only Anti-Personnel land mines are prohibited by UN treaty, since 1997 */
 };
 
 
@@ -338,6 +345,18 @@ static std::string cmdFire(const std::string&,
     if (fireButton && myTank != NULL && myTank->isAlive()
             && myTank->getTeam() != ObserverTeam)
         myTank->fireShot();
+    return std::string();
+}
+
+static std::string cmdMine(const std::string&,
+    const CommandManager::ArgList& args, bool*)
+{
+    if (args.size() != 0)
+        return "usage: mine";
+    LocalPlayer *myTank = LocalPlayer::getMyTank();
+    if (myTank != NULL && myTank->isAlive()
+        && myTank->getTeam() != ObserverTeam)
+        myTank->plantMine();
     return std::string();
 }
 

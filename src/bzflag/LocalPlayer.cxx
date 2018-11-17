@@ -1343,6 +1343,72 @@ bool            LocalPlayer::fireShot()
     return true;
 }
 
+bool            LocalPlayer::plantMine()
+{
+    if (!(firingStatus == Ready || firingStatus == Zoned))
+        return false;
+
+    // find an empty slot
+    const int numShots = World::getWorld()->getMaxShots();
+    int i;
+    for (i = 0; i < numShots; i++)
+        if (!shots[i])
+            break;
+    if (i == numShots) return false;
+
+    // make sure we're allowed to shoot
+    if (!isAlive() || isPaused() ||
+        ((location == InBuilding) && !isPhantomZoned()))
+        return false;
+
+    // prepare shot
+    FiringInfo firingInfo(*this, i + getSalt());
+    // FIXME team coloring of shot is never used; it was meant to be used
+    // for rabbit mode to correctly calculate team kills when rabbit changes
+    firingInfo.shot.team = getTeam();
+
+    // move shot origin under tank and make it stationary
+    const float* pos = getPosition();
+    firingInfo.shot.pos[0] = pos[0];
+    firingInfo.shot.pos[1] = pos[1];
+    firingInfo.shot.pos[2] = pos[2];
+    firingInfo.shot.vel[0] = 0.0f;
+    firingInfo.shot.vel[1] = 0.0f;
+    firingInfo.shot.vel[2] = 0.0f;
+
+    // make shot and put it in the table
+    shots[i] = new LocalShotPath(firingInfo);
+
+    // Insert timestamp, useful for dead reckoning jitter fixing
+    // TODO should maybe use getTick() instead? must double check
+    const float timeStamp = float(TimeKeeper::getCurrent() - TimeKeeper::getNullTime());
+    firingInfo.timeSent = timeStamp;
+
+    // always send a player-update message. To synchronize movement and
+    // shot start. They should generally travel on the same frame, when
+    // flushing the output queues.
+    server->sendPlayerUpdate(this);
+    server->sendBeginShot(firingInfo);
+
+    if (BZDB.isTrue("enableLocalShotEffect") && SceneRenderer::instance().useQuality() >= 2)
+        EFFECTS.addShotEffect(getColor(), firingInfo.shot.pos, getAngle(), getVelocity());
+
+    if (gettingSound)
+    {
+        playLocalSound(SFX_RUNOVER); // splat
+        ForceFeedback::shotFired();
+    }
+
+    shotStatistics.recordFire(firingInfo.flagType, getForward(), firingInfo.shot.vel);
+
+    if (getFlag() == Flags::TriggerHappy)
+    {
+        // make sure all the shots don't go off at once
+        forceReload(BZDB.eval(StateDatabase::BZDB_RELOADTIME) / numShots);
+    }
+    return true;
+}
+
 float           LocalPlayer::getReloadTime() const
 {
     const int numShots = World::getWorld()->getMaxShots();
