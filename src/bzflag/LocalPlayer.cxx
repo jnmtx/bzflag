@@ -1370,8 +1370,8 @@ bool            LocalPlayer::plantMine()
     // move shot origin under tank and make it stationary
     const float* pos = getPosition();
     const float* dir = getForward();
-    firingInfo.shot.pos[0] = pos[0] + getRadius()*dir[1]; // behind the tank
-    firingInfo.shot.pos[1] = pos[1] + getRadius()*dir[0];
+    firingInfo.shot.pos[0] = pos[0] + getRadius()*1.1*dir[1]; // behind the tank
+    firingInfo.shot.pos[1] = pos[1] + getRadius()*1.1*dir[0];
     firingInfo.shot.pos[2] = pos[2];		   // same vertical as tank
     firingInfo.shot.vel[0] = 0.0f;
     firingInfo.shot.vel[1] = 0.0f;
